@@ -12,12 +12,14 @@ OLDIFS=$IFS
 # new IFS: comma
 IFS=","
 
-# initial variable
+# initialize variables
 num=0
 wordlist=()
 wordmean=()
+right=0
+wrong=0
 
-# read csv and line (3 columns)
+# read csv in each line (2 columns)
 while read f1 f2
 do
     wordlist[$num]=$f1
@@ -36,16 +38,22 @@ for (( i = 0 ; i < ${#wordlist[@]} ; i++ )); do
     echo "     ${wordmean[$i]}"  # Meaning
     echo
     
-    if [ x${wordmean[$i]} == x$userinput ]
-    then
+    if [[ ${wordmean[$i]} == $userinput ]]; then
         echo "Correct!"
+        right=`expr $right + 1`
     else
         echo "Wrong..."
+        wrong=`expr $wrong + 1`
     fi
 
     read -p "Press ENTER to go next..."
     clear
 done
+
+echo "Result"
+echo
+echo "Correct: $right"
+echo "  Wrong: $wrong"
 
 # restore IFS
 IFS=$OLDIFS
